@@ -1,0 +1,44 @@
+# Build outputs
+build/
+dist/
+dist-electron/
+out/
+release/
+
+# Electron-builder output
+dist_electron/
+dist-electron/
+electron-dist/
+
+# Development
+node_modules/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Editor directories and files
+# Exclude everything in .vscode
+.vscode/*
+
+# But include these specific files
+!.vscode/extensions.json     # Recommended extensions for the project
+!.vscode/launch.json         # Shared debug configurations
+!.vscode/tasks.json          # Shared build tasks
+!.vscode/settings.json       # Project-specific settings (carefully selected)
+
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Electron
+electron/dist/
