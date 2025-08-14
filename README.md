@@ -11,6 +11,7 @@ An Electron application with React and TypeScript
 ### Install
 
 ```bash
+$ nvm use v20
 $ pnpm install
 ```
 
