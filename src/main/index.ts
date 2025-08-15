@@ -1,7 +1,11 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
+import installExtension, {
+  REACT_DEVELOPER_TOOLS,
+  REDUX_DEVTOOLS
+} from 'electron-devtools-installer'
 
 function createWindow(): void {
   // Create the browser window.
@@ -26,6 +30,41 @@ function createWindow(): void {
     return { action: 'deny' }
   })
 
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔧 Development mode: Context menu enabled')
+
+    mainWindow.webContents.on('context-menu', (_event, params) => {
+      const { x, y } = params
+
+      const contextMenu = Menu.buildFromTemplate([
+        {
+          label: '🔍 Inspect Element',
+          click: () => {
+            mainWindow.webContents.inspectElement(x, y)
+          }
+        },
+        {
+          label: '🛠️ Open DevTools',
+          click: () => {
+            mainWindow.webContents.openDevTools()
+          }
+        },
+        { type: 'separator' },
+        {
+          label: '🔄 Reload',
+          click: () => {
+            mainWindow.webContents.reload()
+          }
+        }
+      ])
+
+      contextMenu.popup({ window: mainWindow })
+    })
+  } else {
+    console.log('📦 Production mode: Context menu disabled')
+    // No context menu handler = no right-click menu in production
+  }
+
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
@@ -35,12 +74,32 @@ function createWindow(): void {
   }
 }
 
+async function installDevToolsExtensions(): Promise<void> {
+  if (is.dev) {
+    try {
+      // Install the extensions you need
+      const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]
+
+      const installedExtensions = await Promise.all(
+        extensions.map(extension => installExtension(extension))
+      )
+
+      console.log('Installed DevTools extensions:', installedExtensions)
+    } catch (error) {
+      console.error('Failed to install DevTools extensions:', error)
+    }
+  }
+}
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  // Install DevTools extensions
+  installDevToolsExtensions()
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
