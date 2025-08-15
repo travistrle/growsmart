@@ -5,6 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/renderer/src/*"]
-    }
+    },
+    "jsx": "react-jsx"
   }
 }
