@@ -38,4 +38,13 @@ $ pnpm build:linux
 
 ```bash
 pnpm dlx shadcn@latest add button
+
+
+```bash
+pnpm add react-router-dom
+```
+```bash
+
+pnpm dlx shadcn@latest add navigation-menu sheet
+pnpm add lucide-react
 ```
