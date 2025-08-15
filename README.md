@@ -32,3 +32,9 @@ $ pnpm build:mac
 # For Linux
 $ pnpm build:linux
 ```
+
+### Add shadcn components
+
+```bash
+pnpm dlx shadcn@latest add button
+```
