@@ -37,14 +37,8 @@ $ pnpm build:linux
 ### Add shadcn components
 
 ```bash
-pnpm dlx shadcn@latest add button
-
-
-```bash
-pnpm add react-router-dom
-```
-```bash
-
-pnpm dlx shadcn@latest add navigation-menu sheet
-pnpm add lucide-react
+$ pnpm dlx shadcn@latest add button
+$ pnpm add react-router-dom
+$ pnpm dlx shadcn@latest add navigation-menu sheet
+$ pnpm add lucide-react
 ```

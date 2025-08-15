@@ -6,9 +6,9 @@ import Footer from '../ui/Footer';
 
 const MainLayout: React.FC = () => {
   return (
-    <div className="w-full flex-1 min-h-screen flex-col">
+    <div className="w-full min-h-screen flex flex-col">
       <Header />
-      <main className="w-full flex-1">
+      <main className="flex-1">
         
           <Outlet />
        
