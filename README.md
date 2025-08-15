@@ -42,3 +42,13 @@ $ pnpm add react-router-dom
 $ pnpm dlx shadcn@latest add navigation-menu sheet
 $ pnpm add lucide-react
 ```
+
+### Unit test
+```bash
+$ pnpm test
+```
+
+# Install testing libraties
+```bash
+$ pnpm add -D vitest jsdom @testing-library/react @testing-library/jest-dom
+```
