@@ -1,11 +1,16 @@
 import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
+import { Button } from '@/components/ui/button'
 
 function App(): React.JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
   return (
     <>
+      <h1 className="text-3xl font-bold text-blue-500">Tailwind Test</h1>
+      <div className="flex min-h-screen items-center justify-center">
+        <Button variant="default">Shadcn Button</Button>
+      </div>
       <img alt="logo" className="logo" src={electronLogo} />
       <div className="creator">Powered by electron-vite</div>
       <div className="text">
