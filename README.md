@@ -52,3 +52,8 @@ $ pnpm test
 ```bash
 $ pnpm add -D vitest jsdom @testing-library/react @testing-library/jest-dom
 ```
+
+### Integration test
+```bash
+pnpm add -D @testing-library/user-event
+```
