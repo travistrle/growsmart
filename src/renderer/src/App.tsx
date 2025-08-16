@@ -1,10 +1,8 @@
-
-import React from 'react';
+import React from 'react'
 import HomePage from './components/pages/HomePage'
-import About from './components/pages/About';
+import About from './components/pages/About'
 import MainLayout from './components/layout/MainLayout'
-import {HashRouter as Router, Route, Routes } from 'react-router-dom';
-
+import { HashRouter as Router, Route, Routes } from 'react-router-dom'
 
 const App: React.FC = () => {
   return (
@@ -17,7 +15,7 @@ const App: React.FC = () => {
         </Route>
       </Routes>
     </Router>
-  );
-};
+  )
+}
 
-export default App;
+export default App

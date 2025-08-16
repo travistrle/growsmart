@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear()
 
   return (
     <footer className="border-t py-6 md:py-8 bg-zinc-800 text-white">
@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
         <p>&copy; {currentYear} MyApp Inc. All rights reserved.</p>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer
