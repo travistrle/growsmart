@@ -81,7 +81,7 @@ async function installDevToolsExtensions(): Promise<void> {
       const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]
 
       const installedExtensions = await Promise.all(
-        extensions.map(extension => installExtension(extension))
+        extensions.map((extension) => installExtension(extension))
       )
 
       console.log('Installed DevTools extensions:', installedExtensions)
