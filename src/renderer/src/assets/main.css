@@ -33,6 +33,7 @@ code {
 #root {
   display: flex;
   align-items: center;
+  width: 100%;
   justify-content: center;
   flex-direction: column;
   margin-bottom: 80px;
