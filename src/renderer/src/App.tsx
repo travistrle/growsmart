@@ -13,9 +13,7 @@ function App(): React.JSX.Element {
         <Button variant="default">Shadcn Button</Button>
         <SwitchDemo />
       </div>
-     
-        
-    
+
       <img alt="logo" className="logo" src={electronLogo} />
       <div className="creator">Powered by electron-vite</div>
       <div className="text">
