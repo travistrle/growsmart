@@ -1,0 +1,37 @@
+name: Lint and Typecheck
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9  # Recent version, adjust if needed for compatibility
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.3  # Specific Node.js version as requested
+          cache: pnpm  # Caches pnpm store for faster installs
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile  # Ensures exact dependency versions
+
+      - name: Run lint
+        run: pnpm run lint  # Runs eslint as defined in package.json
+
+      - name: Run typecheck
+        run: pnpm run typecheck  # Runs typecheck:node and typecheck:web
