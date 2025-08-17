@@ -37,5 +37,26 @@ $ pnpm build:linux
 ### Add shadcn components
 
 ```bash
-pnpm dlx shadcn@latest add button
+$ pnpm dlx shadcn@latest add button
+$ pnpm add react-router-dom
+$ pnpm dlx shadcn@latest add navigation-menu sheet
+$ pnpm add lucide-react
+```
+
+### Unit test
+
+```bash
+$ pnpm test
+```
+
+# Install testing libraties
+
+```bash
+$ pnpm add -D vitest jsdom @testing-library/react @testing-library/jest-dom
+```
+
+### Integration test
+
+```bash
+pnpm add -D @testing-library/user-event
 ```
