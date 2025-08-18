@@ -31,7 +31,7 @@ const LandingPage: React.FC = () => {
           to="/home"
           className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 px-10 rounded-lg shadow-2xl transition-transform transform hover:scale-105 duration-300 ease-in-out"
         >
-          Let's Get Started
+          Let&apos;s Get Started
         </Link>
       </div>
     </div>
