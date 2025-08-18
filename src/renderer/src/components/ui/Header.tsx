@@ -39,7 +39,7 @@ const DesktopNav: React.FC = () => (
   <NavigationMenu className="hidden md:flex">
     <NavigationMenuList className="gap-6">
       <NavigationMenuItem>
-        <NavItem to="/">Home</NavItem>
+        <NavItem to="/home">Let's type!</NavItem>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavItem to="/about">About</NavItem>
