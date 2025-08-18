@@ -85,15 +85,10 @@ const Header: React.FC = () => {
             className="max-w-screen-xl mx-auto px-4 md:px-8 lg:px-12 text-lg font-bold text-white"
           >
             <NavLink to="/" className="text-xl items-centerfont-bold text-white">
-            <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-    RR
-  </span>
-  <span className="text-primary-foreground/70 mx-1">&</span>
-<span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
-    TT
-  </span>
-
-</NavLink>
+              <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                GrowSmart
+              </span>
+            </NavLink>
           </NavLink>
         </div>
 

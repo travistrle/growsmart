@@ -61,3 +61,14 @@ $ pnpm add -D vitest jsdom @testing-library/react @testing-library/jest-dom
 ```bash
 pnpm add -D @testing-library/user-event
 ```
+
+### TypeChecking
+# Find files that do not meet typecheck
+```bash
+pnpm lint --fix
+```
+
+# List all files with linting errors
+```bash
+pnpm validate
+```

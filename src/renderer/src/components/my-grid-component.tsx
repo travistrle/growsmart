@@ -5,7 +5,6 @@ import { CardSkeleton } from '@/components/card-skeleton'
 import { TypeOutline } from 'lucide-react' // Make sure to import the icon
 import { useNavigate } from 'react-router-dom'
 
-
 const mockItems = [
   {
     id: 1,
@@ -23,11 +22,11 @@ const mockItems = [
   },
   {
     id: 3,
-    title: 'Advanced', 
+    title: 'Advanced',
     description: 'Master complex texts.',
     content: 'Challenge yourself with numbers, symbols, and longer paragraphs.',
     path: '/advanced-typing'
-  },
+  }
 ]
 
 export function MyGridComponent(): React.ReactElement {
@@ -39,7 +38,7 @@ export function MyGridComponent(): React.ReactElement {
     const timer = setTimeout(() => {
       setItems(mockItems)
       setIsLoading(false)
-    }, 500) 
+    }, 500)
 
     return () => clearTimeout(timer)
   }, [])
@@ -52,32 +51,28 @@ export function MyGridComponent(): React.ReactElement {
     <div className="p-4 md:p-8">
       <Grid>
         {isLoading
-          ? 
-            Array.from({ length: 3 }).map((_, index) => <CardSkeleton key={index} />)
-          : 
-            items.map((item) => (
+          ? Array.from({ length: 3 }).map((_, index) => <CardSkeleton key={index} />)
+          : items.map((item) => (
               <div key={item.id} onClick={() => handleCardClick(item.path)}>
-              <Card
-                key={item.id}
-                className="cursor-pointer transition-all hover:shadow-lg hover:border-primary"
-                onClick={() => handleCardClick(item.path)}
-              >
-                
-                <CardHeader className="flex flex-row items-center justify-between">
-                  <div>
-                    <CardTitle>{item.title}</CardTitle>
-                    <CardDescription className="mt-1">{item.description}</CardDescription>
-                  </div>
-                  <TypeOutline className="h-8 w-8 text-muted-foreground" />
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground">{item.content}</p>
-                </CardContent>
-              </Card>
+                <Card
+                  key={item.id}
+                  className="cursor-pointer transition-all hover:shadow-lg hover:border-primary"
+                  onClick={() => handleCardClick(item.path)}
+                >
+                  <CardHeader className="flex flex-row items-center justify-between">
+                    <div>
+                      <CardTitle>{item.title}</CardTitle>
+                      <CardDescription className="mt-1">{item.description}</CardDescription>
+                    </div>
+                    <TypeOutline className="h-8 w-8 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">{item.content}</p>
+                  </CardContent>
+                </Card>
               </div>
             ))}
       </Grid>
-
     </div>
   )
 }
