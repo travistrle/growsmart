@@ -41,6 +41,7 @@ $ pnpm dlx shadcn@latest add button
 $ pnpm add react-router-dom
 $ pnpm dlx shadcn@latest add navigation-menu sheet
 $ pnpm add lucide-react
+$ pnpm dlx shadcn@latest add skeleton card
 ```
 
 ### Unit test
