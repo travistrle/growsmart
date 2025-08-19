@@ -63,7 +63,7 @@ pnpm add -D @testing-library/user-event
 ```
 
 ### TypeChecking
-# Find files that do not meet typecheck
+# Find files that do not meet typecheck and automatically fix
 ```bash
 pnpm lint --fix
 ```

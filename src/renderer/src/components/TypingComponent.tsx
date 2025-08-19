@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 
-interface TypingTestProps {
+interface TypingProps {
   content: string
 }
 
@@ -9,7 +9,7 @@ function normalizeNewlines(s: string): string {
   return s.replace(/\r\n?/g, '\n').normalize?.('NFC') ?? s.replace(/\r\n?/g, '\n')
 }
 
-export function TypingTest({ content }: TypingTestProps): React.ReactElement {
+export function TypingComponent({ content }: TypingProps): React.ReactElement {
   // ✅ Normalize target text newlines so comparisons match textarea behavior
   const textToType = useMemo(() => normalizeNewlines(content), [content])
 
@@ -28,6 +28,9 @@ export function TypingTest({ content }: TypingTestProps): React.ReactElement {
 
   const isFinished = userInputNorm.length === totalChars
 
+  const clickSoundRef = useRef<HTMLAudioElement>(
+    typeof Audio !== 'undefined' ? new Audio('../../sounds/click.mp3') : null
+  )
   const recompute = (raw: string): void => {
     const norm = normalizeNewlines(raw)
     if (!startTime && norm.length > 0) setStartTime(Date.now())
@@ -35,7 +38,9 @@ export function TypingTest({ content }: TypingTestProps): React.ReactElement {
     let errorCount = 0
     const typedChars = Array.from(norm)
     for (let i = 0; i < typedChars.length; i++) {
-      if (typedChars[i] !== targetChars[i]) errorCount++
+      if (typedChars[i] !== targetChars[i]) {
+        errorCount++
+      }
     }
 
     setErrors(errorCount)
@@ -52,7 +57,11 @@ export function TypingTest({ content }: TypingTestProps): React.ReactElement {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
-    // Allow Tab insertion inside textarea
+    if (!isFinished && clickSoundRef.current) {
+      clickSoundRef.current.currentTime = 0
+      clickSoundRef.current.play().catch(() => {})
+    }
+
     if (e.key === 'Tab') {
       e.preventDefault()
       const el = e.currentTarget
@@ -94,16 +103,22 @@ export function TypingTest({ content }: TypingTestProps): React.ReactElement {
   return (
     <div>
       <div
-        className="w-full max-w-4xl p-6 bg-white rounded-lg shadow-md font-mono whitespace-pre-wrap"
+        className="w-full p-6 max-w-6xl bg-white rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
         onClick={() => inputRef.current?.focus()}
       >
         <div className="text-2xl tracking-wider leading-relaxed mb-6">
           {targetChars.map((char, index) => {
             // Make whitespace visible but keep underlying comparison exact
             let displayChar = char
-            if (char === ' ') displayChar = '\u00A0' // NBSP
-            if (char === '\n') displayChar = '↵' // visible newline glyph
-            if (char === '\t') displayChar = '⇥' // visible tab glyph
+            if (char === ' ') {
+              displayChar = '\u00A0' // NBSP
+            }
+            if (char === '\n') {
+              displayChar = '↵' // visible newline glyph
+            }
+            if (char === '\t') {
+              displayChar = '⇥' // visible tab glyph
+            }
             // For '\n' we let pre-wrap render a real line break
 
             let charClass = 'text-gray-400'

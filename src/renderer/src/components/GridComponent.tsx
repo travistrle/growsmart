@@ -1,42 +1,20 @@
 import React, { useState, useEffect } from 'react'
 import { Grid } from '@/components/ui/grid'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
-import { CardSkeleton } from '@/components/card-skeleton'
-import { TypeOutline } from 'lucide-react' // Make sure to import the icon
+import { CardSkeleton } from '@/components/CardSkeleton'
+import { TypeOutline } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { typingLevelData, Level } from '../data/typingLevel'
 
-const mockItems = [
-  {
-    id: 1,
-    title: 'Beginner',
-    description: 'Start with the basics.',
-    content: 'Focus on home row keys and proper hand positioning. Accuracy over speed.',
-    path: '/beginner-typing'
-  },
-  {
-    id: 2,
-    title: 'Intermediate',
-    description: 'Build your speed and accuracy.',
-    content: 'Practice with common words, punctuation, and capital letters.',
-    path: '/intermediate-typing'
-  },
-  {
-    id: 3,
-    title: 'Advanced',
-    description: 'Master complex texts.',
-    content: 'Challenge yourself with numbers, symbols, and longer paragraphs.',
-    path: '/advanced-typing'
-  }
-]
-
-export function MyGridComponent(): React.ReactElement {
-  const [items, setItems] = useState<typeof mockItems>([])
+export function GridComponent(): React.ReactElement {
+  const [items, setItems] = useState<Level[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const navigation = useNavigate()
 
   useEffect(() => {
+    const formatedData = Object.values(typingLevelData)
     const timer = setTimeout(() => {
-      setItems(mockItems)
+      setItems(formatedData)
       setIsLoading(false)
     }, 500)
 
@@ -44,6 +22,7 @@ export function MyGridComponent(): React.ReactElement {
   }, [])
 
   const handleCardClick = (path: string): void => {
+    console.log('path: ', path)
     navigation(path)
   }
 
@@ -60,9 +39,16 @@ export function MyGridComponent(): React.ReactElement {
                   onClick={() => handleCardClick(item.path)}
                 >
                   <CardHeader className="flex flex-row items-center justify-between">
-                    <div>
-                      <CardTitle>{item.title}</CardTitle>
-                      <CardDescription className="mt-1">{item.description}</CardDescription>
+                    <div className="flex flex-col gap-2">
+                      <CardTitle>
+                        <span
+                          className={`px-2 py-0.5 text-lg font-semibold rounded-full ${item.badgeColor}`}
+                        >
+                          {item.title}{' '}
+                        </span>
+                      </CardTitle>
+
+                      <CardDescription className="mt-3">{item.description}</CardDescription>
                     </div>
                     <TypeOutline className="h-8 w-8 text-muted-foreground" />
                   </CardHeader>
