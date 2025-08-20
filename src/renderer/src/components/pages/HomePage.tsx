@@ -1,10 +1,23 @@
 import React from 'react'
+import { GridComponent } from '../GridComponent'
 
 const HomePage: React.FC = () => {
   return (
-    <div className="flex-1 items-center justify-center flex-1 w-full bg-gray-100">
-      <h1 className="text-4xl font-bold text-black">Welcome to the Home Page! 🏠</h1>
+    <div className="p-8 h-screen w-full bg-[#FAF8CC] flex flex-col items-center">
+      <div className="w-full max-w-5xl flex flex-col items-center gap-8">
+        <h1 className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text mt-12 mb-4 font-bold text-5xl text-center">
+          Welcome to the GrowSmart Typing App!
+        </h1>
+        <p className="text-xl text-center text-gray-600 max-w-2xl">
+          Select a level below to practice typing and improve your skills!
+        </p>
+
+        <div className="w-full">
+          <GridComponent />
+        </div>
+      </div>
     </div>
   )
 }
+
 export default HomePage

@@ -84,7 +84,11 @@ const Header: React.FC = () => {
             to="/"
             className="max-w-screen-xl mx-auto px-4 md:px-8 lg:px-12 text-lg font-bold text-white"
           >
-            MyApp 🚀
+            <NavLink to="/" className="text-xl items-centerfont-bold text-white">
+              <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">
+                GrowSmart
+              </span>
+            </NavLink>
           </NavLink>
         </div>
 

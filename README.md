@@ -41,6 +41,7 @@ $ pnpm dlx shadcn@latest add button
 $ pnpm add react-router-dom
 $ pnpm dlx shadcn@latest add navigation-menu sheet
 $ pnpm add lucide-react
+$ pnpm dlx shadcn@latest add skeleton card
 ```
 
 ### Unit test
@@ -59,4 +60,15 @@ $ pnpm add -D vitest jsdom @testing-library/react @testing-library/jest-dom
 
 ```bash
 pnpm add -D @testing-library/user-event
+```
+
+### TypeChecking
+# Find files that do not meet typecheck and automatically fix
+```bash
+pnpm lint --fix
+```
+
+# List all files with linting errors
+```bash
+pnpm validate
 ```
