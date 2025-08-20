@@ -103,7 +103,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   return (
     <div>
       <div
-        className="w-full p-6 max-w-6xl bg-white rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
+        className="w-full p-6 max-w-5xl bg-white rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
         onClick={() => inputRef.current?.focus()}
       >
         <div className="text-2xl tracking-wider leading-relaxed mb-6">

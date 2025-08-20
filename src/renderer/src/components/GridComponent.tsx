@@ -28,7 +28,7 @@ export function GridComponent(): React.ReactElement {
 
   return (
     <div className="p-4 md:p-8">
-      <Grid>
+      <Grid className="flex flex-col gap-8">
         {isLoading
           ? Array.from({ length: 3 }).map((_, index) => <CardSkeleton key={index} />)
           : items.map((item) => (

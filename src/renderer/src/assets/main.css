@@ -37,6 +37,7 @@ code {
   justify-content: center;
   flex-direction: column;
   margin-bottom: 80px;
+  background-color: var(--background-color);
 }
 
 .logo {
@@ -241,11 +242,12 @@ code {
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-primary-foreground: oklch(21.791% 0.03985 20.815);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+   --background-color: #f5f5f5; 
 }
 
 .dark {

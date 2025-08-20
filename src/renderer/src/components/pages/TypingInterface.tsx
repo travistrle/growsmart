@@ -14,7 +14,7 @@ const TypingInterface: React.FC = () => {
     return <div>Practice not found!</div>
   }
   return (
-    <div className="flex flex-1 flex-col items-center justify-center w-full bg-[#FAF8CC] gap-4">
+    <div className="flex flex-1 flex-col items-center justify-center w-full bg-neutral-100 gap-4">
       <p className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text p-4 font-bold text-4xl">
         {practice.name}
       </p>

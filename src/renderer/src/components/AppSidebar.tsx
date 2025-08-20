@@ -46,7 +46,9 @@ export function AppSidebar(): ReactElement {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <SidebarHeader className="p-2">
-          {state == 'expanded' && <span className="text-lg font-semibold">GrowSmart</span>}
+          {state == 'expanded' && (
+            <span className="text-lg text-neutral-900 font-semibold">GrowSmart</span>
+          )}
         </SidebarHeader>
       </SidebarHeader>
       <SidebarContent>
