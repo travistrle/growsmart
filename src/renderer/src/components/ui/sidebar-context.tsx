@@ -1,5 +1,3 @@
-// PASTE INTO YOUR NEW FILE: src/components/ui/sidebar-context.tsx
-
 import { useContext, createContext } from 'react'
 
 export type SidebarContextProps = {

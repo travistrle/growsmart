@@ -1,6 +1,7 @@
 import { Home, Inbox, PanelLeftClose } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useSidebar } from '@/components/ui/sidebar-context'
+import { type ReactElement } from 'react'
 
 import {
   Sidebar,
@@ -15,8 +16,6 @@ import {
   SidebarTrigger
 } from '@/components/ui/sidebar'
 
-import React from 'react'
-
 const items = [
   {
     title: 'Home',
@@ -30,8 +29,19 @@ const items = [
   }
 ]
 
-export function AppSidebar(): React.ReactElement {
-  const { state } = useSidebar()
+export function AppSidebar(): ReactElement {
+  const { state, toggleSidebar } = useSidebar()
+  const location = useLocation()
+  const activeRoute = location.pathname
+
+  const handleMenuClick = (url: string): void => {
+    if (state === 'collapsed') {
+      toggleSidebar()
+    } else if (state === 'expanded' && activeRoute === url) {
+      toggleSidebar()
+    }
+    // otherwise do nothing, just navigate
+  }
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -45,12 +55,18 @@ export function AppSidebar(): React.ReactElement {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton tooltip={item.title} asChild>
-                    <Link to={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
+                  <NavLink to={item.url} end={item.url === '/'}>
+                    {({ isActive }) => (
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        isActive={isActive}
+                        onClick={() => handleMenuClick(item.url)}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    )}
+                  </NavLink>
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
@@ -60,7 +76,9 @@ export function AppSidebar(): React.ReactElement {
       <SidebarFooter>
         <div className="flex justify-end p-2">
           <SidebarTrigger>
-            <PanelLeftClose />
+            <PanelLeftClose
+              className={`transition-transform ${state === 'collapsed' ? 'rotate-180' : ''}`}
+            />
           </SidebarTrigger>
         </div>
       </SidebarFooter>
