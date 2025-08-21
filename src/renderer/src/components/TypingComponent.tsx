@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-
+import typeSound from '../assets/typesound.wav'
 interface TypingProps {
   content: string
 }
@@ -29,7 +29,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const isFinished = userInputNorm.length === totalChars
 
   const clickSoundRef = useRef<HTMLAudioElement | null>(
-    typeof Audio !== 'undefined' ? new Audio('///sounds///click.mp3') : null
+    typeof Audio !== 'undefined' ? new Audio(typeSound) : null
   )
 
   const recompute = (raw: string): void => {
