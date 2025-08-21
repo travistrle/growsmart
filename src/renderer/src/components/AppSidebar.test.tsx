@@ -44,5 +44,4 @@ describe('AppSidebar', () => {
     expect(screen.getByRole('button', { name: 'Home' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'About' })).toBeInTheDocument()
   })
-
 })

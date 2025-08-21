@@ -1,5 +1,5 @@
 import { Home, Inbox, PanelLeftClose } from 'lucide-react'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { useSidebar } from '@/components/ui/sidebar-context'
 import { type ReactElement } from 'react'
 
@@ -30,17 +30,8 @@ const items = [
 ]
 
 export function AppSidebar(): ReactElement {
-  const { state, toggleSidebar } = useSidebar()
-  const location = useLocation()
-  const activeRoute = location.pathname
+  const { state } = useSidebar()
 
-  const handleMenuClick = (url: string): void => {
-    if (state === 'collapsed') {
-      toggleSidebar()
-    } else if (state === 'expanded' && activeRoute === url) {
-      toggleSidebar()
-    }
-  }
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -58,11 +49,7 @@ export function AppSidebar(): ReactElement {
                 <SidebarMenuItem key={item.title}>
                   <NavLink to={item.url} end={item.url === '/'}>
                     {({ isActive }) => (
-                      <SidebarMenuButton
-                        tooltip={item.title}
-                        isActive={isActive}
-                        onClick={() => handleMenuClick(item.url)}
-                      >
+                      <SidebarMenuButton tooltip={item.title} isActive={isActive}>
                         <item.icon />
                         <span>{item.title}</span>
                       </SidebarMenuButton>
