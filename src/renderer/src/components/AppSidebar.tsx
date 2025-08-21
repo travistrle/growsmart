@@ -40,7 +40,6 @@ export function AppSidebar(): ReactElement {
     } else if (state === 'expanded' && activeRoute === url) {
       toggleSidebar()
     }
-    // otherwise do nothing, just navigate
   }
   return (
     <Sidebar collapsible="icon">

@@ -28,9 +28,10 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
 
   const isFinished = userInputNorm.length === totalChars
 
-  const clickSoundRef = useRef<HTMLAudioElement>(
-    typeof Audio !== 'undefined' ? new Audio('../../sounds/click.mp3') : null
+  const clickSoundRef = useRef<HTMLAudioElement | null>(
+    typeof Audio !== 'undefined' ? new Audio('///sounds///click.mp3') : null
   )
+
   const recompute = (raw: string): void => {
     const norm = normalizeNewlines(raw)
     if (!startTime && norm.length > 0) setStartTime(Date.now())
@@ -58,8 +59,11 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (!isFinished && clickSoundRef.current) {
+      console.log('Playing click sound')
       clickSoundRef.current.currentTime = 0
-      clickSoundRef.current.play().catch(() => {})
+      clickSoundRef.current.play().catch((error) => {
+        console.error('Audio playback error:', error)
+      })
     }
 
     if (e.key === 'Tab') {
