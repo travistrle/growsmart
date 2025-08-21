@@ -37,7 +37,7 @@ export function GridPractices(): React.ReactElement {
     level && typeof level === 'string' ? level.charAt(0).toUpperCase() + level.slice(1) : 'Practice'
 
   return (
-    <div className="p-8 h-screen flex flex-col items-center w-full bg-neutral-100 gap-4 overflow-y-auto">
+    <div className="p-8 h-screen flex flex-col items-center w-full  gap-4 overflow-y-auto">
       <h1 className={`text-3xl font-bold mb-6 ${textColor}`}>{levelTitle} Practices</h1>
       <div className="w-full">
         <div className="grid grid-cols-4 gap-4">

@@ -59,7 +59,6 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (!isFinished && clickSoundRef.current) {
-      console.log('Playing click sound')
       clickSoundRef.current.currentTime = 0
       clickSoundRef.current.play().catch((error) => {
         console.error('Audio playback error:', error)
@@ -121,7 +120,6 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
             if (char === '\t') {
               displayChar = '⇥' // visible tab glyph
             }
-            // For '\n' we let pre-wrap render a real line break
 
             let charClass = 'text-gray-400'
             const typedLen = userInputNorm.length
