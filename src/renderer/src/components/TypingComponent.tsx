@@ -96,12 +96,10 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
     if (!isFinished) inputRef.current?.focus()
   }, [isFinished])
 
-  const timeTaken = startTime && endTime ? ((endTime - startTime) / 1000).toFixed(2) : '0'
+  const timeTakenInSeconds = startTime && endTime ? (endTime - startTime) / 1000 : 0
   const correctChars = Math.max(0, userInputNorm.length - errors)
-  const accuracy =
-    isFinished && totalChars > 0 ? ((correctChars / totalChars) * 100).toFixed(2) : '0'
-
-  const timeInMinutes = parseFloat(timeTaken) > 0 ? parseFloat(timeTaken) / 60 : 0
+  const accuracy = isFinished && totalChars > 0 ? (correctChars / totalChars) * 100 : 0
+  const timeInMinutes = timeTakenInSeconds > 0 ? timeTakenInSeconds / 60 : 0
   const wpm = isFinished && timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
 
   return (
@@ -167,10 +165,10 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
               <strong>WPM:</strong> {wpm}
             </p>
             <p>
-              <strong>Time:</strong> {timeTaken}s
+              <strong>Time:</strong> {timeTakenInSeconds.toFixed(2)}s
             </p>
             <p>
-              <strong>Accuracy:</strong> {accuracy}% ({correctChars}/{totalChars})
+              <strong>Accuracy:</strong> {accuracy.toFixed(2)}% ({correctChars}/{totalChars})
             </p>
           </div>
           <button
