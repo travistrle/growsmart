@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import typeSound from '../assets/typesound.wav'
+import { useSound } from '@/hooks/SoundHooks'
+
 interface TypingProps {
   content: string
 }
@@ -19,6 +21,16 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [endTime, setEndTime] = useState<number | null>(null)
   const [errors, setErrors] = useState(0)
+  const { isMuted, volume } = useSound()
+
+  useEffect(() => {
+    if (typeof Audio !== 'undefined') {
+      if (!clickSoundRef.current) {
+        clickSoundRef.current = new Audio(typeSound)
+      }
+      clickSoundRef.current.volume = volume
+    }
+  }, [volume])
 
   // Compare by Unicode code points to avoid basic surrogate-pair issues
   const targetChars = useMemo(() => Array.from(textToType), [textToType])
@@ -58,7 +70,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (!isFinished && clickSoundRef.current) {
+    if (!isFinished && !isMuted && clickSoundRef.current) {
       clickSoundRef.current.currentTime = 0
       clickSoundRef.current.play().catch((error) => {
         console.error('Audio playback error:', error)

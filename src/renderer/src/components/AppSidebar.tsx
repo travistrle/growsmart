@@ -26,6 +26,11 @@ const items = [
     title: 'About',
     url: '/about',
     icon: Inbox
+  },
+  {
+    title: 'Settings',
+    url: '/settings',
+    icon: Inbox
   }
 ]
 
