@@ -66,7 +66,7 @@ export function TitleBar(): ReactElement {
   return (
     // The entire bar is draggable by default
     <div
-      className="w-full h-10 bg-gray-200 flex items-center justify-between px-3 select-none"
+      className="w-full h-10 bg-background dark:bg-gray-800 flex items-center justify-between px-3 select-none"
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
       {/* Left side: Window Controls */}
@@ -79,14 +79,14 @@ export function TitleBar(): ReactElement {
       >
         <button
           onClick={goBack}
-          className="p-1 rounded-md hover:bg-gray-300 transition-colors focus:outline-none"
+          className="p-1 rounded-md text-gray-400 hover:bg-slate-200 dark:text-gray-400 transition-colors focus:outline-none"
           aria-label="Go back"
         >
           <ArrowLeft size={18} />
         </button>
         <button
           onClick={goForward}
-          className="p-1 rounded-md hover:bg-gray-300 transition-colors focus:outline-none"
+          className="p-1 rounded-md text-gray-400 hover:bg-slate-200 dark:text-gray-400 transition-colors focus:outline-none"
           aria-label="Go forward"
         >
           <ArrowRight size={18} />

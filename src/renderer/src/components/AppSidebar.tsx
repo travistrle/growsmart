@@ -1,4 +1,4 @@
-import { Home, Inbox, PanelLeftClose } from 'lucide-react'
+import { Home, Inbox, PanelLeftClose, Settings } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useSidebar } from '@/components/ui/sidebar-context'
 import { type ReactElement } from 'react'
@@ -30,7 +30,7 @@ const items = [
   {
     title: 'Settings',
     url: '/settings',
-    icon: Inbox
+    icon: Settings
   }
 ]
 
@@ -38,11 +38,16 @@ export function AppSidebar(): ReactElement {
   const { state } = useSidebar()
 
   return (
-    <Sidebar collapsible="icon">
+    <Sidebar
+      collapsible="icon"
+      className="flex-none h-full border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+    >
       <SidebarHeader>
         <SidebarHeader className="p-2">
           {state == 'expanded' && (
-            <span className="text-lg text-neutral-900 font-semibold">GrowSmart</span>
+            <span className="text-lg bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text mt-12 mb-4 font-bold">
+              GrowSmart
+            </span>
           )}
         </SidebarHeader>
       </SidebarHeader>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
-import typeSound from '../assets/typesound.wav'
+import typeSound from '../assets/audio/typesound.wav'
 import { useSound } from '@/hooks/SoundHooks'
 
 interface TypingProps {
@@ -114,63 +114,64 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const wpm = isFinished && timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
 
   return (
-    <div>
-      <div
-        className="w-full p-6 max-w-5xl bg-white rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
-        onClick={() => inputRef.current?.focus()}
-      >
-        <div className="text-2xl tracking-wider leading-relaxed mb-6">
-          {targetChars.map((char, index) => {
-            // Make whitespace visible but keep underlying comparison exact
-            let displayChar = char
-            if (char === ' ') {
-              displayChar = '\u00A0' // NBSP
-            }
-            if (char === '\n') {
-              displayChar = '↵' // visible newline glyph
-            }
-            if (char === '\t') {
-              displayChar = '⇥' // visible tab glyph
-            }
+    <div className="flex flex-col items-center p-5 max-w-5xl mx-auto gap-6">
+      <div>
+        <div
+          className="w-full p-6 max-w-5xl bg-white dark:bg-gray-400 rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
+          onClick={() => inputRef.current?.focus()}
+        >
+          <div className="text-2xl tracking-wider leading-relaxed mb-6">
+            {targetChars.map((char, index) => {
+              // Make whitespace visible but keep underlying comparison exact
+              let displayChar = char
+              if (char === ' ') {
+                displayChar = '\u00A0' // NBSP
+              }
+              if (char === '\n') {
+                displayChar = '↵' // visible newline glyph
+              }
+              if (char === '\t') {
+                displayChar = '⇥' // visible tab glyph
+              }
 
-            let charClass = 'text-gray-400'
-            const typedLen = userInputNorm.length
+              let charClass = 'text-gray-400 dark:text-gray-600'
+              const typedLen = userInputNorm.length
 
-            if (index < typedLen) {
-              charClass =
-                userInputNorm[index] === targetChars[index]
-                  ? 'bg-green-200 text-green-800'
-                  : 'bg-red-200 text-red-800'
-            }
+              if (index < typedLen) {
+                charClass =
+                  userInputNorm[index] === targetChars[index]
+                    ? 'bg-green-200 text-green-800'
+                    : 'bg-red-200 text-red-800'
+              }
 
-            if (index === typedLen && !isFinished) {
-              charClass += ' animate-pulse border-b-2 border-blue-500'
-            }
+              if (index === typedLen && !isFinished) {
+                charClass += ' animate-pulse border-b-2 border-blue-500'
+              }
 
-            return (
-              <span key={index} className={charClass}>
-                {displayChar}
-                {char === '\n' ? '\n' : null}
-              </span>
-            )
-          })}
+              return (
+                <span key={index} className={charClass}>
+                  {displayChar}
+                  {char === '\n' ? '\n' : null}
+                </span>
+              )
+            })}
+          </div>
         </div>
+
+        {/* Hidden but focusable textarea to capture every keystroke, including Tab and Enter */}
+        <textarea
+          ref={inputRef}
+          value={userInputRaw}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          className="sr-only"
+          disabled={isFinished}
+        />
       </div>
-
-      {/* Hidden but focusable textarea to capture every keystroke, including Tab and Enter */}
-      <textarea
-        ref={inputRef}
-        value={userInputRaw}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        className="sr-only"
-        disabled={isFinished}
-      />
-
       {isFinished && (
-        <div className="mt-6 p-4 bg-gray-100 rounded-lg text-center gap-4">
+        <div className="w-150 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg text-center gap-4">
           <h2 className="text-2xl text-red-500 font-bold mb-2 p-4">Results ✨</h2>
-          <div className="flex justify-center text-gray-500 gap-8 p-4">
+          <div className="flex justify-center text-gray-500 dark:text-gray-400 gap-8 p-4">
             <p>
               <strong>WPM:</strong> {wpm}
             </p>
@@ -183,7 +184,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
           </div>
           <button
             onClick={resetTest}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors p-4"
+            className="mt-4 px-4 py-2 bg-slate-500 dark:bg-gray-600 text-white font-semibold rounded-lg hover:bg-slate-400 dark:hover:bg-gray-500 transition-colors p-4"
           >
             Try Again
           </button>
