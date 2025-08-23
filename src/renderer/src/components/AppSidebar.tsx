@@ -45,13 +45,13 @@ export function AppSidebar(): ReactElement {
       <SidebarHeader>
         <SidebarHeader className="p-2">
           {state == 'expanded' && (
-            <span className="text-lg bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text mt-12 mb-4 font-bold">
+            <span className="text-lg bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text font-bold">
               GrowSmart
             </span>
           )}
         </SidebarHeader>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="pt-4">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>

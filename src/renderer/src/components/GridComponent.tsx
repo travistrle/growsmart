@@ -16,7 +16,7 @@ export function GridComponent(): React.ReactElement {
     const timer = setTimeout(() => {
       setItems(formatedData)
       setIsLoading(false)
-    }, 500)
+    }, 50)
 
     return () => clearTimeout(timer)
   }, [])

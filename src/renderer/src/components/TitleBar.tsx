@@ -17,41 +17,6 @@ declare global {
 }
 
 // A new component just for the macOS-style window controls
-const WindowControls = (): ReactElement | null => {
-  // These controls should only appear on macOS ('darwin')
-  if (window.api.platform !== 'darwin') {
-    return null
-  }
-
-  const handleMinimize = (): void => window.api.minimizeWindow()
-  const handleMaximize = (): void => window.api.toggleMaximizeWindow()
-  const handleClose = (): void => window.api.closeWindow()
-
-  return (
-    // This container is not draggable
-    <div
-      className="flex space-x-2 bg-stone-800"
-      style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
-    >
-      <button
-        onClick={handleClose}
-        className="w-3 h-3 bg-red-500 rounded-full hover:bg-red-600 focus:outline-none"
-        aria-label="Close"
-      />
-      <button
-        onClick={handleMinimize}
-        className="w-3 h-3 bg-yellow-500 rounded-full hover:bg-yellow-600 focus:outline-none"
-        aria-label="Minimize"
-      />
-      <button
-        onClick={handleMaximize}
-        className="w-3 h-3 bg-green-500 rounded-full hover:bg-green-600 focus:outline-none"
-        aria-label="Toggle Maximize"
-      />
-    </div>
-  )
-}
-
 export function TitleBar(): ReactElement {
   const navigate = useNavigate()
 
@@ -66,13 +31,10 @@ export function TitleBar(): ReactElement {
   return (
     // The entire bar is draggable by default
     <div
-      className="w-full h-10 bg-background dark:bg-gray-800 flex items-center justify-between px-3 select-none"
+      className="w-full h-10 bg-background dark:bg-gray-800 flex justify-end select-none"
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
-      {/* Left side: Window Controls */}
-      <WindowControls />
-
-      {/* Center: Navigation Buttons */}
+    
       <div
         className="flex items-center space-x-2"
         style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}

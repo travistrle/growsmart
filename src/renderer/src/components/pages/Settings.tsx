@@ -15,7 +15,7 @@ export function Settings(): ReactElement {
   }
 
   return (
-    <div className="flex flex-col items-start p-10 border-2 rounded-md border-shadow shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] h-screen ">
+    <div className="flex flex-col items-start p-10 border-2 rounded-md border-shadow shadow-[0_10px_15px_-3px_rgba(0,0,0,0.1)] ">
       <div className="flex flex-row w-120 gap-8 p-2">
         <h2 className="flex text-lg items-center justify-center text-slate-500 font-bold">
           Volume
