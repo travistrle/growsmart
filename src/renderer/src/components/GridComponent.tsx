@@ -16,7 +16,7 @@ export function GridComponent(): React.ReactElement {
     const timer = setTimeout(() => {
       setItems(formatedData)
       setIsLoading(false)
-    }, 500)
+    }, 50)
 
     return () => clearTimeout(timer)
   }, [])
@@ -28,14 +28,14 @@ export function GridComponent(): React.ReactElement {
 
   return (
     <div className="p-4 md:p-8">
-      <Grid>
+      <Grid className="flex flex-col gap-8">
         {isLoading
           ? Array.from({ length: 3 }).map((_, index) => <CardSkeleton key={index} />)
           : items.map((item) => (
               <div key={item.id} onClick={() => handleCardClick(item.path)}>
                 <Card
                   key={item.id}
-                  className="cursor-pointer transition-all hover:shadow-lg hover:border-primary"
+                  className="cursor-pointer transition-all dark:bg-gray-800 hover:shadow-lg hover:border-primary"
                   onClick={() => handleCardClick(item.path)}
                 >
                   <CardHeader className="flex flex-row items-center justify-between">

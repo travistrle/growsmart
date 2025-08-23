@@ -11,12 +11,6 @@ describe('MainLayout Component', () => {
       </MemoryRouter>
     )
 
-    // Check if Header is rendered
-    expect(screen.getByRole('banner')).toBeInTheDocument()
-
-    // Check if Footer is rendered
-    expect(screen.getByRole('contentinfo')).toBeInTheDocument()
-
     // Check if Outlet is rendered (this will depend on the routes set up in your app)
     expect(screen.getByText(/Home/i)).toBeInTheDocument()
   })

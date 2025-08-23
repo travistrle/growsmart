@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
+import typeSound from '../assets/audio/typesound.wav'
+import { useSound } from '@/hooks/SoundHooks'
 
 interface TypingProps {
   content: string
@@ -19,6 +21,16 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [endTime, setEndTime] = useState<number | null>(null)
   const [errors, setErrors] = useState(0)
+  const { isMuted, volume } = useSound()
+
+  useEffect(() => {
+    if (typeof Audio !== 'undefined') {
+      if (!clickSoundRef.current) {
+        clickSoundRef.current = new Audio(typeSound)
+      }
+      clickSoundRef.current.volume = volume
+    }
+  }, [volume])
 
   // Compare by Unicode code points to avoid basic surrogate-pair issues
   const targetChars = useMemo(() => Array.from(textToType), [textToType])
@@ -28,9 +40,10 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
 
   const isFinished = userInputNorm.length === totalChars
 
-  const clickSoundRef = useRef<HTMLAudioElement>(
-    typeof Audio !== 'undefined' ? new Audio('../../sounds/click.mp3') : null
+  const clickSoundRef = useRef<HTMLAudioElement | null>(
+    typeof Audio !== 'undefined' ? new Audio(typeSound) : null
   )
+
   const recompute = (raw: string): void => {
     const norm = normalizeNewlines(raw)
     if (!startTime && norm.length > 0) setStartTime(Date.now())
@@ -57,9 +70,11 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
-    if (!isFinished && clickSoundRef.current) {
+    if (!isFinished && !isMuted && clickSoundRef.current) {
       clickSoundRef.current.currentTime = 0
-      clickSoundRef.current.play().catch(() => {})
+      clickSoundRef.current.play().catch((error) => {
+        console.error('Audio playback error:', error)
+      })
     }
 
     if (e.key === 'Tab') {
@@ -92,86 +107,84 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
     if (!isFinished) inputRef.current?.focus()
   }, [isFinished])
 
-  const timeTaken = startTime && endTime ? ((endTime - startTime) / 1000).toFixed(2) : '0'
+  const timeTakenInSeconds = startTime && endTime ? (endTime - startTime) / 1000 : 0
   const correctChars = Math.max(0, userInputNorm.length - errors)
-  const accuracy =
-    isFinished && totalChars > 0 ? ((correctChars / totalChars) * 100).toFixed(2) : '0'
-
-  const timeInMinutes = parseFloat(timeTaken) > 0 ? parseFloat(timeTaken) / 60 : 0
+  const accuracy = isFinished && totalChars > 0 ? (correctChars / totalChars) * 100 : 0
+  const timeInMinutes = timeTakenInSeconds > 0 ? timeTakenInSeconds / 60 : 0
   const wpm = isFinished && timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
 
   return (
-    <div>
-      <div
-        className="w-full p-6 max-w-6xl bg-white rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
-        onClick={() => inputRef.current?.focus()}
-      >
-        <div className="text-2xl tracking-wider leading-relaxed mb-6">
-          {targetChars.map((char, index) => {
-            // Make whitespace visible but keep underlying comparison exact
-            let displayChar = char
-            if (char === ' ') {
-              displayChar = '\u00A0' // NBSP
-            }
-            if (char === '\n') {
-              displayChar = '↵' // visible newline glyph
-            }
-            if (char === '\t') {
-              displayChar = '⇥' // visible tab glyph
-            }
-            // For '\n' we let pre-wrap render a real line break
+    <div className="flex flex-col items-center p-5 max-w-5xl mx-auto gap-6">
+      <div>
+        <div
+          className="w-full p-6 max-w-5xl bg-white dark:bg-gray-400 rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
+          onClick={() => inputRef.current?.focus()}
+        >
+          <div className="text-2xl tracking-wider leading-relaxed mb-6">
+            {targetChars.map((char, index) => {
+              // Make whitespace visible but keep underlying comparison exact
+              let displayChar = char
+              if (char === ' ') {
+                displayChar = '\u00A0' // NBSP
+              }
+              if (char === '\n') {
+                displayChar = '↵' // visible newline glyph
+              }
+              if (char === '\t') {
+                displayChar = '⇥' // visible tab glyph
+              }
 
-            let charClass = 'text-gray-400'
-            const typedLen = userInputNorm.length
+              let charClass = 'text-gray-400 dark:text-gray-600'
+              const typedLen = userInputNorm.length
 
-            if (index < typedLen) {
-              charClass =
-                userInputNorm[index] === targetChars[index]
-                  ? 'bg-green-200 text-green-800'
-                  : 'bg-red-200 text-red-800'
-            }
+              if (index < typedLen) {
+                charClass =
+                  userInputNorm[index] === targetChars[index]
+                    ? 'bg-green-200 text-green-800'
+                    : 'bg-red-200 text-red-800'
+              }
 
-            if (index === typedLen && !isFinished) {
-              charClass += ' animate-pulse border-b-2 border-blue-500'
-            }
+              if (index === typedLen && !isFinished) {
+                charClass += ' animate-pulse border-b-2 border-blue-500'
+              }
 
-            return (
-              <span key={index} className={charClass}>
-                {displayChar}
-                {char === '\n' ? '\n' : null}
-              </span>
-            )
-          })}
+              return (
+                <span key={index} className={charClass}>
+                  {displayChar}
+                  {char === '\n' ? '\n' : null}
+                </span>
+              )
+            })}
+          </div>
         </div>
+
+        {/* Hidden but focusable textarea to capture every keystroke, including Tab and Enter */}
+        <textarea
+          ref={inputRef}
+          value={userInputRaw}
+          onChange={handleInputChange}
+          onKeyDown={handleKeyDown}
+          className="sr-only"
+          disabled={isFinished}
+        />
       </div>
-
-      {/* Hidden but focusable textarea to capture every keystroke, including Tab and Enter */}
-      <textarea
-        ref={inputRef}
-        value={userInputRaw}
-        onChange={handleInputChange}
-        onKeyDown={handleKeyDown}
-        className="sr-only"
-        disabled={isFinished}
-      />
-
       {isFinished && (
-        <div className="mt-6 p-4 bg-gray-100 rounded-lg text-center gap-4">
+        <div className="w-150 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg text-center gap-4">
           <h2 className="text-2xl text-red-500 font-bold mb-2 p-4">Results ✨</h2>
-          <div className="flex justify-center text-gray-500 gap-8 p-4">
+          <div className="flex justify-center text-gray-500 dark:text-gray-400 gap-8 p-4">
             <p>
               <strong>WPM:</strong> {wpm}
             </p>
             <p>
-              <strong>Time:</strong> {timeTaken}s
+              <strong>Time:</strong> {timeTakenInSeconds.toFixed(2)}s
             </p>
             <p>
-              <strong>Accuracy:</strong> {accuracy}% ({correctChars}/{totalChars})
+              <strong>Accuracy:</strong> {accuracy.toFixed(2)}% ({correctChars}/{totalChars})
             </p>
           </div>
           <button
             onClick={resetTest}
-            className="mt-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors p-4"
+            className="mt-4 px-4 py-2 bg-slate-500 dark:bg-gray-600 text-white font-semibold rounded-lg hover:bg-slate-400 dark:hover:bg-gray-500 transition-colors p-4"
           >
             Try Again
           </button>

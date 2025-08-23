@@ -3,13 +3,14 @@ import { GridComponent } from '../GridComponent'
 
 const HomePage: React.FC = () => {
   return (
-    <div className="p-8 h-screen w-full bg-[#FAF8CC] flex flex-col items-center">
+    <div className="p-8h-screen w-full flex flex-col items-center">
       <div className="w-full max-w-5xl flex flex-col items-center gap-8">
         <h1 className="bg-gradient-to-r from-blue-500 to-purple-600 text-transparent bg-clip-text mt-12 mb-4 font-bold text-5xl text-center">
-          Welcome to the GrowSmart Typing App!
+          Master Your Keyboard!
         </h1>
-        <p className="text-xl text-center text-gray-600 max-w-2xl">
-          Select a level below to practice typing and improve your skills!
+        <p className="text-xl text-center text-gray-600 dark:text-gray-400 max-w-2xl">
+          Enhance your productivity by improving your typing speed and accuracy. Select a level to
+          begin.
         </p>
 
         <div className="w-full">

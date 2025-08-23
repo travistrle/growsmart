@@ -20,6 +20,7 @@ export function GridPractices(): React.ReactElement {
     intermediate: 'text-orange-600',
     advanced: 'text-green-800'
   }
+
   const textColor = textColors[level as keyof typeof textColors] || 'text-gray-800'
 
   const IconComponent =
@@ -36,25 +37,25 @@ export function GridPractices(): React.ReactElement {
     level && typeof level === 'string' ? level.charAt(0).toUpperCase() + level.slice(1) : 'Practice'
 
   return (
-    <div className="p-8 h-screen flex flex-col items-center w-full bg-[#FAF8CC] gap-4 overflow-y-auto">
+    <div className="p-8 h-screen flex flex-col items-center w-full  gap-4 overflow-y-auto">
       <h1 className={`text-3xl font-bold mb-6 ${textColor}`}>{levelTitle} Practices</h1>
       <div className="w-full">
         <div className="grid grid-cols-4 gap-4">
           {practices.map((practice) => (
             <Link to={`/typing/${level}/${practice.id}`} key={practice.id}>
-              <Card className="cursor-pointer transition-all hover:shadow-lg hover:border-primary h-full">
+              <Card className="cursor-pointer transition-all border-2 shadow-md hover:shadow-md  hover:border-primary  dark:bg-gray-800 h-full min-h-60">
                 <CardHeader className="border-b">
                   <CardTitle>
-                    <div className="relative w-full h-40 rounded-lg bg-white shadow-md hover:shadow-xl transition-shadow grid place-items-center">
+                    <div className="relative w-full h-40 rounded-lg bg-white dark:bg-gray-200 shadow-md hover:shadow-xl transition-shadow grid place-items-center">
                       <IconComponent className="size-24 text-gray-100 row-start-1 col-start-1" />
-                      <span className="text-5xl font-bold text-slate-700 row-start-1 col-start-1">
+                      <span className="text-5xl font-bold text-slate-700 row-start-1 dark:text-stone-900 col-start-1">
                         {practice.id}
                       </span>
                     </div>
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="flex flex-1 items-center justify-center text-gray-600">
+                  <p className="flex flex-1 items-center justify-center text-gray-600 dark:text-gray-400">
                     {practice.name}
                   </p>
                 </CardContent>
