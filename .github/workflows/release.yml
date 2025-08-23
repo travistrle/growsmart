@@ -19,7 +19,11 @@ jobs:
         uses: pnpm/action-setup@v4
         with:
           version: 9
-
+      - name: Install Wine and dependencies
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y wine wine32 wine64 libwine libwine:i386 fonts-wine
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
