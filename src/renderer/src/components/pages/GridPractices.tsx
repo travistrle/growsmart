@@ -44,11 +44,11 @@ export function GridPractices(): React.ReactElement {
           {practices.map((practice) => (
             <Link to={`/typing/${level}/${practice.id}`} key={practice.id}>
               <Card className="cursor-pointer transition-all border-2 shadow-md hover:shadow-md  hover:border-primary  dark:bg-gray-800 h-full min-h-60">
-                <CardHeader className="border-b">
+                <CardHeader className="border-b justify-center items-center">
                   <CardTitle>
-                    <div className="relative w-full h-40 rounded-lg bg-white dark:bg-gray-200 shadow-md hover:shadow-xl transition-shadow grid place-items-center">
-                      <IconComponent className="size-24 text-gray-100 row-start-1 col-start-1" />
-                      <span className="text-5xl font-bold text-slate-700 row-start-1 dark:text-stone-900 col-start-1">
+                    <div className="relative w-full aspect-square rounded-lg bg-white dark:bg-gray-200 shadow-md hover:shadow-xl transition-shadow grid place-items-center">
+                      <IconComponent className="size-[clamp(4rem,15vw,10rem)] text-gray-100 row-start-1 col-start-1" />
+                      <span className="text-[clamp(1.5rem,5vw,3rem)] font-bold text-slate-700 row-start-1 dark:text-stone-900 col-start-1">
                         {practice.id}
                       </span>
                     </div>
