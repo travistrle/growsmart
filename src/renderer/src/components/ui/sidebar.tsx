@@ -114,7 +114,7 @@ function Sidebar({
   children,
   ...props
 }: ComponentProps<'aside'> & { collapsible?: 'icon' | 'none' }): ReactNode {
-  const { state } = useSidebar();
+  const { state } = useSidebar()
 
   return (
     <aside
@@ -133,7 +133,7 @@ function Sidebar({
     >
       {children}
     </aside>
-  );
+  )
 }
 
 function SidebarTrigger({

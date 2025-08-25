@@ -40,10 +40,10 @@ export function GridPractices(): React.ReactElement {
     <div className="p-8 h-screen flex flex-col items-center w-full  gap-4 overflow-y-auto">
       <h1 className={`text-3xl font-bold mb-6 ${textColor}`}>{levelTitle} Practices</h1>
       <div className="w-full">
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {practices.map((practice) => (
             <Link to={`/typing/${level}/${practice.id}`} key={practice.id}>
-              <Card className="cursor-pointer transition-all border-2 shadow-md hover:shadow-md  hover:border-primary  dark:bg-gray-800 h-full min-h-60">
+              <Card className="cursor-pointer transition-all border-2 shadow-md hover:shadow-md  hover:border-primary  dark:bg-gray-800/60 h-full min-h-60">
                 <CardHeader className="border-b justify-center items-center">
                   <CardTitle>
                     <div className="relative w-full aspect-square rounded-lg bg-white dark:bg-gray-200 shadow-md hover:shadow-xl transition-shadow grid place-items-center">
