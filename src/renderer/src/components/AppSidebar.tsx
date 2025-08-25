@@ -40,7 +40,7 @@ export function AppSidebar(): ReactElement {
   return (
     <Sidebar
       collapsible="icon"
-      className="flex-none h-full border-r border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900"
+      className="h-full border-r text-sidebar-foreground bg-[#FAFAFA] dark:bg-[#171717] border-gray-200 dark:border-sidebar-border dark:text-gray-100"
     >
       <SidebarHeader>
         <SidebarHeader className="p-2">
