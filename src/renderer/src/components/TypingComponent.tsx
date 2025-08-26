@@ -114,13 +114,13 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const wpm = isFinished && timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
 
   return (
-    <div className="flex flex-col items-center p-5 max-w-5xl mx-auto gap-6">
-      <div>
+    <div className="flex flex-col w-screen h-sreen items-center p-5 max-w-5xl mx-auto gap-6">
+      <div className="w-full flex flex-col items-center gap-4">
         <div
-          className="w-full p-6 max-w-5xl bg-white dark:bg-gray-400 rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
+          className="w-[80%] max-w-5xl p-6 bg-white dark:bg-gray-400 rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
           onClick={() => inputRef.current?.focus()}
         >
-          <div className="text-2xl tracking-wider leading-relaxed mb-6">
+          <div className="text-2xl text-[clamp(16px,2vw,22px)] tracking-wider leading-relaxed mb-6">
             {targetChars.map((char, index) => {
               // Make whitespace visible but keep underlying comparison exact
               let displayChar = char
