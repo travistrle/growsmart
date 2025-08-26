@@ -83,7 +83,7 @@ export function TitleBar(): ReactElement {
   return isMac ? (
     <div
       // 3. Main container now uses justify-between
-      className="w-full h-10 bg-[#FAFAFA] dark:bg-[#171717] dark: border-b border-sibebar-border flex items-center justify-end px-3 select-none"
+      className="w-full h-10 bg-[#FAFAFA] dark:bg-[#171717] dark:text-gray-400 dark:border-b border-sibebar-border flex items-center justify-end px-3 select-none"
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
       <div
@@ -113,7 +113,7 @@ export function TitleBar(): ReactElement {
   ) : (
     <div
       // 3. Main container now uses justify-between
-      className="w-full h-10 bg-background dark:bg-gray-800 flex items-center justify-between px-3 select-none"
+      className="w-full h-10 bg-[#FAFAFA] dark:bg-[#171717] dark:text-gray-400 dark:border-b border-sibebar-border flex items-center justify-between px-3 select-none"
       style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
     >
       <NavigationArrows />

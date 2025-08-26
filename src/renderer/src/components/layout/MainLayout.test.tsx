@@ -1,17 +1,33 @@
 import { render, screen } from '@testing-library/react'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+// Import Routes and Route
+import { MemoryRouter, Routes, Route } from 'react-router-dom'
 import MainLayout from './MainLayout'
-import { describe, it, expect } from 'vitest'
-import { MemoryRouter } from 'react-router-dom'
+import HomePage from '../pages/HomePage'
 
 describe('MainLayout Component', () => {
-  it('should render Header, Footer, and Outlet', () => {
+  // 2. Set up the mock before each test in this file
+  beforeEach(() => {
+    vi.stubGlobal('api', {
+      platform: 'darwin', // You can set this to 'darwin' or 'win32' for your test
+      minimizeWindow: () => {},
+      toggleMaximizeWindow: () => {},
+      closeWindow: () => {}
+    })
+  })
+
+  it('should render its layout and the correct child route via Outlet', () => {
     render(
-      <MemoryRouter>
-        <MainLayout />
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="/" element={<MainLayout />}>
+            <Route index element={<HomePage />} />
+          </Route>
+        </Routes>
       </MemoryRouter>
     )
 
-    // Check if Outlet is rendered (this will depend on the routes set up in your app)
-    expect(screen.getByText(/Home/i)).toBeInTheDocument()
+    // Your assertion should now pass
+    expect(screen.getByText(/Master Your Keyboard/i)).toBeInTheDocument()
   })
 })
