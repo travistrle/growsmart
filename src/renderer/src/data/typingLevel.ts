@@ -22,7 +22,7 @@ export const typingLevelData: Record<string, Level> = {
     description: 'Build your speed and accuracy.',
     content: 'Practice with common words, punctuation, and capital letters',
     path: '/practices/intermediate',
-    badgeColor: 'bg-yellow-100 text-amber-500'
+    badgeColor: 'bg-yellow-100 text-orange-400'
   },
   advanced: {
     id: 3,
@@ -30,6 +30,6 @@ export const typingLevelData: Record<string, Level> = {
     description: 'Master complex typing skills.',
     content: 'Challenge yourself with numbers, symbols, and longer paragraphs.',
     path: '/practices/advanced',
-    badgeColor: 'bg-green-100 text-green-800'
+    badgeColor: 'bg-green-300 text-green-800'
   }
 }

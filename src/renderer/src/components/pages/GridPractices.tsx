@@ -16,11 +16,16 @@ export function GridPractices(): React.ReactElement {
   }
   // 1. Create a map for the badge colors
   const textColors = {
-    beginner: 'text-blue-800',
-    intermediate: 'text-orange-600',
-    advanced: 'text-green-800'
+    beginner: 'text-blue-400',
+    intermediate: 'text-orange-400',
+    advanced: 'text-green-400'
   }
 
+  const levelDescriptions = {
+    beginner: "Focus on accuracy and proper hand position. Let's start with simple words.",
+    intermediate: "Time to pick up the pace! Let's work on common words and punctuation.",
+    advanced: "Ready for a challenge? Let's master complex sentences and symbols."
+  }
   const textColor = textColors[level as keyof typeof textColors] || 'text-gray-800'
 
   const IconComponent =
@@ -37,9 +42,14 @@ export function GridPractices(): React.ReactElement {
     level && typeof level === 'string' ? level.charAt(0).toUpperCase() + level.slice(1) : 'Practice'
 
   return (
-    <div className="p-8 h-screen flex flex-col items-center w-full  gap-4 overflow-y-auto">
-      <h1 className={`text-3xl font-bold mb-6 ${textColor}`}>{levelTitle} Practices</h1>
-      <div className="w-full">
+    <div className="h-screen flex flex-col items-center w-full gap-4 overflow-y-auto">
+      <div className={`text-4xl font-bold mb-6 ${textColor}`}>{levelTitle} Practices</div>
+      <div className="w-full max-w-3xl p-4 mb-8 text-center bg-black/5 dark:bg-white/5 rounded-lg">
+        <p className="text-gray-600 dark:text-gray-300">
+          {level && levelDescriptions[level as keyof typeof levelDescriptions]}
+        </p>
+      </div>
+      <div className="w-full max-w-6xl">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {practices.map((practice) => (
             <Link to={`/typing/${level}/${practice.id}`} key={practice.id}>
