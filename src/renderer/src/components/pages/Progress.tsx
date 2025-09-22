@@ -23,7 +23,6 @@ export function Progress(): ReactElement {
   const [chartData, setChartData] = useState<ChartData[]>([])
   const [timeFilter, setTimeFilter] = useState<'7days' | '4weeks' | '1year'>('7days')
 
-  // 1. Fetch all typing data when the component first loads
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -36,12 +35,10 @@ export function Progress(): ReactElement {
     fetchData()
   }, [])
 
-  // 2. Filter and process the data whenever the filter or data changes
   useEffect(() => {
     const now = new Date()
     let filtered: TypingDataEntry[] = []
 
-    // Filter data based on the selected time range
     if (timeFilter === '7days') {
       const sevenDaysAgo = new Date(now.setDate(now.getDate() - 7))
       filtered = allData.filter((entry) => new Date(entry.timestamp) >= sevenDaysAgo)

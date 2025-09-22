@@ -53,16 +53,13 @@ function createWindow(): void {
     mainWindow.close()
   })
 
-  // Added on 09/09/2025
   ipcMain.handle('get-typing-data', async () => {
     try {
-      await fs.access(typingDataPath) // Check if the file exists
+      await fs.access(typingDataPath)
       const rawData = await fs.readFile(typingDataPath, 'utf-8')
-      // Use yaml.load to parse the YAML string into a JavaScript object
       const data = yaml.load(rawData) as TypingDataEntry[]
-      return data || [] // Return data, or an empty array if the file is empty
+      return data || []
     } catch (error) {
-      // If the file doesn't exist or we can't read it, return a default empty state.
       console.log('No data file found. Returning empty array.' + error)
       return []
     }
@@ -132,7 +129,6 @@ function createWindow(): void {
 async function installDevToolsExtensions(): Promise<void> {
   if (is.dev) {
     try {
-      // Install the extensions you need
       const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]
 
       const installedExtensions = await Promise.all(

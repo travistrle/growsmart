@@ -23,9 +23,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [endTime, setEndTime] = useState<number | null>(null)
   const [errors, setErrors] = useState(0)
-
   const { isMuted, volume } = useSound()
-  //const [showResults, setShowResults] = useState(false)
   const [finalWpm, setFinalWpm] = useState(0)
   const [finalAccuracy, setFinalAccuracy] = useState(0)
 
@@ -122,7 +120,6 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
     setStartTime(null)
     setEndTime(null)
     setErrors(0)
-    //setShowResults(false)
     inputRef.current?.focus()
   }
 
