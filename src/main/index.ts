@@ -1,11 +1,24 @@
 import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
 import { join } from 'path'
+import path from 'path'
+import fs from 'fs/promises'
+import yaml from 'js-yaml'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS
 } from 'electron-devtools-installer'
+
+interface TypingDataEntry {
+  timestamp: string
+  wpm: number
+  accuracy: number
+}
+
+const userDataPath = app.getPath('userData')
+
+const typingDataPath = path.join(userDataPath, 'typing-progress-data.yaml')
 
 function createWindow(): void {
   // Create the browser window.
@@ -38,6 +51,32 @@ function createWindow(): void {
 
   ipcMain.on('window-close', () => {
     mainWindow.close()
+  })
+
+  // Added on 09/09/2025
+  ipcMain.handle('get-typing-data', async () => {
+    try {
+      await fs.access(typingDataPath) // Check if the file exists
+      const rawData = await fs.readFile(typingDataPath, 'utf-8')
+      // Use yaml.load to parse the YAML string into a JavaScript object
+      const data = yaml.load(rawData) as TypingDataEntry[]
+      return data || [] // Return data, or an empty array if the file is empty
+    } catch (error) {
+      // If the file doesn't exist or we can't read it, return a default empty state.
+      console.log('No data file found. Returning empty array.' + error)
+      return []
+    }
+  })
+
+  ipcMain.handle('save-typing-data', async (_event, data: TypingDataEntry[]) => {
+    try {
+      const yamlString = yaml.dump(data)
+      await fs.writeFile(typingDataPath, yamlString)
+      return { success: true }
+    } catch (error) {
+      console.error('Failed to save typing data:', error)
+      return { success: false, error: (error as Error).message }
+    }
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -81,11 +120,8 @@ function createWindow(): void {
     })
   } else {
     console.log('📦 Production mode: Context menu disabled')
-    // No context menu handler = no right-click menu in production
   }
 
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {

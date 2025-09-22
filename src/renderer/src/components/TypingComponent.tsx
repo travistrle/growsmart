@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react'
 import typeSound from '../assets/audio/typesound.wav'
 import { useSound } from '@/hooks/SoundHooks'
+import { saveTypingResult } from '@/lib/utils'
+//import { saveTypingResult } from '@/lib/utils'
 
 interface TypingProps {
   content: string
@@ -21,7 +23,11 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   const [startTime, setStartTime] = useState<number | null>(null)
   const [endTime, setEndTime] = useState<number | null>(null)
   const [errors, setErrors] = useState(0)
+
   const { isMuted, volume } = useSound()
+  //const [showResults, setShowResults] = useState(false)
+  const [finalWpm, setFinalWpm] = useState(0)
+  const [finalAccuracy, setFinalAccuracy] = useState(0)
 
   useEffect(() => {
     if (typeof Audio !== 'undefined') {
@@ -35,7 +41,6 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   // Compare by Unicode code points to avoid basic surrogate-pair issues
   const targetChars = useMemo(() => Array.from(textToType), [textToType])
   const totalChars = targetChars.length
-
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const isFinished = userInputNorm.length === totalChars
@@ -64,6 +69,23 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
       setEndTime((prev) => prev ?? Date.now())
     }
   }
+
+  // Modified on 09/22/2025 to save typing result
+  useEffect(() => {
+    if (isFinished && startTime && endTime) {
+      // Calculate final stats
+      const timeTakenInSeconds = (endTime - startTime) / 1000
+      const correctChars = Math.max(0, userInputNorm.length - errors)
+      const accuracy = totalChars > 0 ? (correctChars / totalChars) * 100 : 0
+      const timeInMinutes = timeTakenInSeconds / 60
+      const wpm = timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
+
+      // Store results in state for display
+      setFinalWpm(wpm)
+      setFinalAccuracy(accuracy)
+      saveTypingResult(wpm, accuracy)
+    }
+  }, [isFinished, startTime, endTime, errors, totalChars, userInputNorm.length])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>): void => {
     recompute(e.target.value)
@@ -100,6 +122,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
     setStartTime(null)
     setEndTime(null)
     setErrors(0)
+    //setShowResults(false)
     inputRef.current?.focus()
   }
 
@@ -109,15 +132,12 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
 
   const timeTakenInSeconds = startTime && endTime ? (endTime - startTime) / 1000 : 0
   const correctChars = Math.max(0, userInputNorm.length - errors)
-  const accuracy = isFinished && totalChars > 0 ? (correctChars / totalChars) * 100 : 0
-  const timeInMinutes = timeTakenInSeconds > 0 ? timeTakenInSeconds / 60 : 0
-  const wpm = isFinished && timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
 
   return (
     <div className="flex flex-col w-screen h-sreen items-center p-5 max-w-5xl mx-auto gap-6">
       <div className="w-full flex flex-col items-center gap-4">
         <div
-          className="w-[80%] max-w-5xl p-6 bg-white dark:bg-gray-400 rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
+          className="w-[85%] max-w-5xl p-6 bg-white dark:bg-gray-400 rounded-lg shadow-md font-mono text-gray-800 whitespace-pre-wrap break-words"
           onClick={() => inputRef.current?.focus()}
         >
           <div className="text-2xl text-[clamp(16px,2vw,22px)] tracking-wider leading-relaxed mb-6">
@@ -173,13 +193,13 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
           <h2 className="text-2xl text-red-500 font-bold mb-2 p-4">Results ✨</h2>
           <div className="flex justify-center text-gray-500 dark:text-gray-400 gap-8 p-4">
             <p>
-              <strong>WPM:</strong> {wpm}
+              <strong>WPM:</strong> {finalWpm}
             </p>
             <p>
               <strong>Time:</strong> {timeTakenInSeconds.toFixed(2)}s
             </p>
             <p>
-              <strong>Accuracy:</strong> {accuracy.toFixed(2)}% ({correctChars}/{totalChars})
+              <strong>Accuracy:</strong> {finalAccuracy.toFixed(2)}% ({correctChars}/{totalChars})
             </p>
           </div>
           <button
