@@ -10,6 +10,8 @@ import installExtension, {
   REDUX_DEVTOOLS
 } from 'electron-devtools-installer'
 
+import { cleanupOldRecords } from '../renderer/src/lib/dataCleaner'
+
 interface TypingDataEntry {
   timestamp: string
   wpm: number
@@ -145,8 +147,9 @@ async function installDevToolsExtensions(): Promise<void> {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
+  shell.openPath(app.getPath('userData'))
   electronApp.setAppUserModelId('com.electron')
 
   // Install DevTools extensions
@@ -163,7 +166,7 @@ app.whenReady().then(() => {
   ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
-
+  cleanupOldRecords()
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

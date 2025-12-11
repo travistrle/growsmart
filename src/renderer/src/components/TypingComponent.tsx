@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react'
 import typeSound from '../assets/audio/typesound.wav'
 import { useSound } from '@/hooks/SoundHooks'
 import { saveTypingResult } from '@/lib/utils'
-//import { saveTypingResult } from '@/lib/utils'
 
 interface TypingProps {
   content: string
@@ -68,7 +67,6 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
     }
   }
 
-  // Modified on 09/22/2025 to save typing result
   useEffect(() => {
     if (isFinished && startTime && endTime) {
       // Calculate final stats
@@ -175,7 +173,6 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
           </div>
         </div>
 
-        {/* Hidden but focusable textarea to capture every keystroke, including Tab and Enter */}
         <textarea
           ref={inputRef}
           value={userInputRaw}
