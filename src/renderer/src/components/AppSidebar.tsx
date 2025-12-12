@@ -1,4 +1,4 @@
-import { Home, Inbox, PanelLeftClose, Settings } from 'lucide-react'
+import { Home, TrendingUp, PanelLeftClose, Settings } from 'lucide-react'
 import { NavLink } from 'react-router-dom'
 import { useSidebar } from '@/components/ui/sidebar-context'
 import { type ReactElement } from 'react'
@@ -23,9 +23,9 @@ const items = [
     icon: Home
   },
   {
-    title: 'About',
-    url: '/about',
-    icon: Inbox
+    title: 'Progress',
+    url: '/progress',
+    icon: TrendingUp
   },
   {
     title: 'Settings',

@@ -1,11 +1,26 @@
 import { app, shell, BrowserWindow, ipcMain, Menu } from 'electron'
 import { join } from 'path'
+import path from 'path'
+import fs from 'fs/promises'
+import yaml from 'js-yaml'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 import installExtension, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS
 } from 'electron-devtools-installer'
+
+import { cleanupOldRecords } from '../renderer/src/lib/dataCleaner'
+
+interface TypingDataEntry {
+  timestamp: string
+  wpm: number
+  accuracy: number
+}
+
+const userDataPath = app.getPath('userData')
+
+const typingDataPath = path.join(userDataPath, 'typing-progress-data.yaml')
 
 function createWindow(): void {
   // Create the browser window.
@@ -38,6 +53,29 @@ function createWindow(): void {
 
   ipcMain.on('window-close', () => {
     mainWindow.close()
+  })
+
+  ipcMain.handle('get-typing-data', async () => {
+    try {
+      await fs.access(typingDataPath)
+      const rawData = await fs.readFile(typingDataPath, 'utf-8')
+      const data = yaml.load(rawData) as TypingDataEntry[]
+      return data || []
+    } catch (error) {
+      console.log('No data file found. Returning empty array.' + error)
+      return []
+    }
+  })
+
+  ipcMain.handle('save-typing-data', async (_event, data: TypingDataEntry[]) => {
+    try {
+      const yamlString = yaml.dump(data)
+      await fs.writeFile(typingDataPath, yamlString)
+      return { success: true }
+    } catch (error) {
+      console.error('Failed to save typing data:', error)
+      return { success: false, error: (error as Error).message }
+    }
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -81,11 +119,8 @@ function createWindow(): void {
     })
   } else {
     console.log('📦 Production mode: Context menu disabled')
-    // No context menu handler = no right-click menu in production
   }
 
-  // HMR for renderer base on electron-vite cli.
-  // Load the remote URL for development or the local html file for production.
   if (is.dev && process.env['ELECTRON_RENDERER_URL']) {
     mainWindow.loadURL(process.env['ELECTRON_RENDERER_URL'])
   } else {
@@ -96,7 +131,6 @@ function createWindow(): void {
 async function installDevToolsExtensions(): Promise<void> {
   if (is.dev) {
     try {
-      // Install the extensions you need
       const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS]
 
       const installedExtensions = await Promise.all(
@@ -113,8 +147,9 @@ async function installDevToolsExtensions(): Promise<void> {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   // Set app user model id for windows
+  //shell.openPath(app.getPath('userData'))
   electronApp.setAppUserModelId('com.electron')
 
   // Install DevTools extensions
@@ -131,7 +166,7 @@ app.whenReady().then(() => {
   ipcMain.on('ping', () => console.log('pong'))
 
   createWindow()
-
+  cleanupOldRecords()
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.

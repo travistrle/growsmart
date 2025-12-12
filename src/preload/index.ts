@@ -1,6 +1,18 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import { electronAPI } from '@electron-toolkit/preload'
 
+export interface TypingDataEntry {
+  timestamp: string
+  wpm: number
+  accuracy: number
+}
+
+const progressApi = {
+  getTypingData: (): Promise<TypingDataEntry[]> => ipcRenderer.invoke('get-typing-data'),
+  saveTypingData: (data: TypingDataEntry[]): Promise<{ success: boolean; error?: string }> =>
+    ipcRenderer.invoke('save-typing-data', data)
+}
+
 // Custom APIs for renderer
 const api = {
   platform: process.platform,
@@ -16,6 +28,7 @@ if (process.contextIsolated) {
   try {
     contextBridge.exposeInMainWorld('electron', electronAPI)
     contextBridge.exposeInMainWorld('api', api)
+    contextBridge.exposeInMainWorld('progressApi', progressApi)
   } catch (error) {
     console.error(error)
   }
