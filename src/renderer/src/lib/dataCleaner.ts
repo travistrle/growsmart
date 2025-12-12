@@ -1,8 +1,8 @@
-
 import fs from 'fs'
 import path from 'path'
 import { app } from 'electron'
 import yaml from 'js-yaml'
+import { MAX_RECORD_COUNT, DATA_RETENTION_YEARS } from '../config'
 
 interface TypingRecord {
   timestamp: string
@@ -27,9 +27,10 @@ export function cleanupOldRecords(): void {
     const initialCount = records.length
 
     // --- Remove records older than 2 years if record's size is greater than 1000 ---
-    if (records.length > 5) {
+    console.log('MAX_RECORD_COUNT: ' + MAX_RECORD_COUNT)
+    if (records.length > MAX_RECORD_COUNT) {
       const twoYearsAgo = new Date()
-      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - 2)
+      twoYearsAgo.setFullYear(twoYearsAgo.getFullYear() - DATA_RETENTION_YEARS)
 
       records = records.filter((record) => {
         const recordDate = new Date(record.timestamp)
@@ -40,7 +41,7 @@ export function cleanupOldRecords(): void {
     if (records.length < initialCount) {
       const newYamlContent = yaml.dump(records, {
         indent: 2,
-        lineWidth: -1 // Prevents splitting long lines
+        lineWidth: -1
       })
       fs.writeFileSync(DATA_FILE_PATH, newYamlContent, 'utf8')
       console.log(`Cleanup complete. Removed ${initialCount - records.length} old records.`)

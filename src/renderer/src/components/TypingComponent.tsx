@@ -13,10 +13,14 @@ function normalizeNewlines(s: string): string {
 }
 
 export function TypingComponent({ content }: TypingProps): React.ReactElement {
-  // ✅ Normalize target text newlines so comparisons match textarea behavior
+  // Normalize target text newlines so comparisons match textarea behavior
   const textToType = useMemo(() => normalizeNewlines(content), [content])
 
   // Keep both raw (what the user actually typed) and normalized (for comparison)
+  const MS_PER_SECOND = 1000
+  const SECONDS_PER_MINUTE = 60
+  const PERCENTAGE_BASE = 100
+  const STANDARDIZED_LENGTH = 5
   const [userInputRaw, setUserInputRaw] = useState('')
   const [userInputNorm, setUserInputNorm] = useState('')
   const [startTime, setStartTime] = useState<number | null>(null)
@@ -70,11 +74,12 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
   useEffect(() => {
     if (isFinished && startTime && endTime) {
       // Calculate final stats
-      const timeTakenInSeconds = (endTime - startTime) / 1000
+      const timeTakenInSeconds = (endTime - startTime) / MS_PER_SECOND
       const correctChars = Math.max(0, userInputNorm.length - errors)
-      const accuracy = totalChars > 0 ? (correctChars / totalChars) * 100 : 0
-      const timeInMinutes = timeTakenInSeconds / 60
-      const wpm = timeInMinutes > 0 ? Math.round(correctChars / 5 / timeInMinutes) : 0
+      const accuracy = totalChars > 0 ? (correctChars / totalChars) * PERCENTAGE_BASE : 0
+      const timeInMinutes = timeTakenInSeconds / SECONDS_PER_MINUTE
+      const wpm =
+        timeInMinutes > 0 ? Math.round(correctChars / STANDARDIZED_LENGTH / timeInMinutes) : 0
 
       // Store results in state for display
       setFinalWpm(wpm)
@@ -125,7 +130,7 @@ export function TypingComponent({ content }: TypingProps): React.ReactElement {
     if (!isFinished) inputRef.current?.focus()
   }, [isFinished])
 
-  const timeTakenInSeconds = startTime && endTime ? (endTime - startTime) / 1000 : 0
+  const timeTakenInSeconds = startTime && endTime ? (endTime - startTime) / MS_PER_SECOND : 0
   const correctChars = Math.max(0, userInputNorm.length - errors)
 
   return (

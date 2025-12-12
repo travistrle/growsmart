@@ -10,6 +10,7 @@ import {
   ResponsiveContainer
 } from 'recharts'
 import type { TypingDataEntry } from '@preload/index'
+import { TIME_FILTERS, type TimeFilter } from '../../config'
 
 // Define the shape of our chart data
 interface ChartData {
@@ -17,11 +18,16 @@ interface ChartData {
   wpm: number
   accuracy: number
 }
+const FILTER_OPTIONS = [
+  { id: TIME_FILTERS.SEVEN_DAYS, label: '7 Days' },
+  { id: TIME_FILTERS.FOUR_WEEKS, label: '4 Weeks' },
+  { id: TIME_FILTERS.ONE_YEAR, label: '1 Year' }
+]
 
 export function Progress(): ReactElement {
   const [allData, setAllData] = useState<TypingDataEntry[]>([])
   const [chartData, setChartData] = useState<ChartData[]>([])
-  const [timeFilter, setTimeFilter] = useState<'7days' | '4weeks' | '1year'>('7days')
+  const [timeFilter, setTimeFilter] = useState<TimeFilter>(TIME_FILTERS.SEVEN_DAYS)
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -39,13 +45,13 @@ export function Progress(): ReactElement {
     const now = new Date()
     let filtered: TypingDataEntry[] = []
 
-    if (timeFilter === '7days') {
+    if (timeFilter === TIME_FILTERS.SEVEN_DAYS) {
       const sevenDaysAgo = new Date(now.setDate(now.getDate() - 7))
       filtered = allData.filter((entry) => new Date(entry.timestamp) >= sevenDaysAgo)
-    } else if (timeFilter === '4weeks') {
+    } else if (timeFilter === TIME_FILTERS.FOUR_WEEKS) {
       const fourWeeksAgo = new Date(now.setDate(now.getDate() - 28))
       filtered = allData.filter((entry) => new Date(entry.timestamp) >= fourWeeksAgo)
-    } else if (timeFilter === '1year') {
+    } else if (timeFilter === TIME_FILTERS.ONE_YEAR) {
       const oneYearAgo = new Date(now.setFullYear(now.getFullYear() - 1))
       filtered = allData.filter((entry) => new Date(entry.timestamp) >= oneYearAgo)
     }
@@ -81,26 +87,19 @@ export function Progress(): ReactElement {
         </h1>
 
         <div className="flex gap-2 p-1 bg-blue-400 rounded-lg">
-          <button
-            onClick={() => setTimeFilter('7days')}
-            className={`px-4 py-1 rounded-md transition-all ${
-              timeFilter === '7days' ? 'bg-white/20 shadow' : 'border border-transparent'
-            }`}
-          >
-            7 Days
-          </button>
-          <button
-            onClick={() => setTimeFilter('4weeks')}
-            className={`px-4 py-1 rounded-md ${timeFilter === '4weeks' ? 'bg-white/20 shadow' : 'border border-transparent'}`}
-          >
-            4 Weeks
-          </button>
-          <button
-            onClick={() => setTimeFilter('1year')}
-            className={`px-4 py-1 rounded-md ${timeFilter === '1year' ? 'bg-white/20 shadow' : 'border border-transparent'}`}
-          >
-            1 Year
-          </button>
+          {FILTER_OPTIONS.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setTimeFilter(option.id)}
+              className={`px-4 py-1 rounded-md transition-all ${
+                timeFilter === option.id
+                  ? 'bg-white/20 shadow'
+                  : 'border border-transparent hover:bg-white/10'
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
         </div>
       </div>
 

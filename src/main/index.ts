@@ -149,7 +149,7 @@ async function installDevToolsExtensions(): Promise<void> {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   // Set app user model id for windows
-  shell.openPath(app.getPath('userData'))
+  //shell.openPath(app.getPath('userData'))
   electronApp.setAppUserModelId('com.electron')
 
   // Install DevTools extensions

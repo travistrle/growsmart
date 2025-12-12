@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 import type { TypingDataEntry } from '@preload/index'
+import { toast } from 'sonner'
 
 export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs))
@@ -17,15 +18,18 @@ export async function saveTypingResult(wpm: number, accuracy: number): Promise<v
 
     const updatedData = [...currentData, newEntry]
 
-    // FIX 3: Added the call to save the updated data back to the file.
     const result = await window.progressApi.saveTypingData(updatedData)
 
-    if (result.success) {
-      console.log('Successfully saved typing data!')
-    } else {
-      console.error('Failed to save typing data:', result.error)
+    if (!result.success) {
+      toast.error('Save Failed', {
+        description: typeof result.error === 'string' ? result.error : 'Unknown error'
+      })
     }
   } catch (error) {
-    console.error('An error occured while saving the typing result.' + error)
+    const errorMessage = error instanceof Error ? error.message : String(error)
+
+    toast.error('Save Failed', {
+      description: `An error occurred: ${errorMessage}`
+    })
   }
 }
